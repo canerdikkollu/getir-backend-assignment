@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Getir Backend Assignment</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <h1 class="title">Getir Backend Assignment</h1>
+    <div id="home">
+        <div id="records"></div>
+    </div>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+    <!-- Create React Component -->
+    <script type="text/babel">
+        var Records = React.createClass({
+            getInitialState: function () {
+                return ({
+                    data: []
+                });
+            },
+            render: function () {
+                var records = this.state.data.records;
+                if (records) {
+                    records = records.map(function (rec, i) {
+                        return (
+                            <li key={i}>
+                                <span className="key">Key: {rec._id.key}</span>
+                                <span className="createdAt">Created Date: {rec._id.createdAt}</span>
+                                <span className="totalCount">Total Count: {rec.totalCount}</span>
+                            </li>
+                        );
+                    });
+                }
+
+                return (
+                    <div id="record-container">
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <label>Enter start date: </label>
+                            <input type="date" ref="startDate" />
+
+                            <label> Enter end date: </label>
+                            <input type="date" ref="endDate" />
+
+                            <label> Enter min count: </label>
+                            <input type="number" ref="minCount" />
+
+                            <label>Enter max count: </label>
+                            <input type="number" ref="maxCount" />
+
+                            <input type="submit" value="Search" />
+                        </form>
+                        <ul>{records}</ul>
+                    </div>
+                );
+            },
+            handleSubmit: function (e) {
+                e.preventDefault();
+
+                fetch('/api/records', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        startDate: this.refs.startDate.value,
+                        endDate: this.refs.endDate.value,
+                        minCount: this.refs.minCount.value,
+                        maxCount: this.refs.maxCount.value
+                    })
+                }).then((response) => {
+                    return response.json();
+                }).then(json => {
+                    this.setState({ data: json })
+                });
+            }
+        });
+        ReactDOM.render(<Records />, document.getElementById('records'));
+    </script>
+</body>
+
+</html>
