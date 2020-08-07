@@ -44,16 +44,16 @@
                     <div id="record-container">
                         <form id="search" onSubmit={this.handleSubmit}>
                             <label>Enter start date: </label>
-                            <input type="date" ref="startDate" />
+                            <input type="date" ref="startDate" defaultValue="2016-01-01"/>
 
                             <label> Enter end date: </label>
-                            <input type="date" ref="endDate" />
+                            <input type="date" ref="endDate" defaultValue="2016-02-01"/>
 
                             <label> Enter min count: </label>
-                            <input type="number" ref="minCount" />
+                            <input type="number" ref="minCount" defaultValue="0" />
 
                             <label>Enter max count: </label>
-                            <input type="number" ref="maxCount" />
+                            <input type="number" ref="maxCount" defaultValue="5000" />
 
                             <input type="submit" value="Search" />
                         </form>
